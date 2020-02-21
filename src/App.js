@@ -1,22 +1,14 @@
 import React, { useState } from 'react'
 import car from './car.png'
 import localisationIcon from './localisation.png'
-import l1 from './distancePics/left/l1.png'
-import l2 from './distancePics/left/l2.png'
-import l3 from './distancePics/left/l3.png'
-import l4 from './distancePics/left/l4.png'
-import f1 from './distancePics/front/f1.png'
-import f2 from './distancePics/front/f2.png'
-import f3 from './distancePics/front/f3.png'
-import f4 from './distancePics/front/f4.png'
-import b1 from './distancePics/back/b1.png'
-import b2 from './distancePics/back/b2.png'
-import b3 from './distancePics/back/b3.png'
-import b4 from './distancePics/back/b4.png'
-import r1 from './distancePics/right/r1.png'
-import r2 from './distancePics/right/r2.png'
-import r3 from './distancePics/right/r3.png'
-import r4 from './distancePics/right/r4.png'
+import { l1, l2, l3, l4 } from './distancePics/left'
+
+import { f1, f2, f3, f4 } from './distancePics/front'
+
+import { b1, b2, b3, b4 } from './distancePics/back'
+
+import { r1, r2, r3, r4 } from './distancePics/right'
+
 import speedIcon from './speedIcon.png'
 import issuesIcon from './issueIcon.jpg'
 import { appStyle } from './appStyle'
@@ -27,13 +19,34 @@ const socket = io(raspberryAdress)
 
 const App = props => {
   let { classes } = props
-  const [front, setFront] = useState(0)
-  const [back, setBack] = useState(0)
-  const [left, setLeft] = useState(0)
-  const [right, setRight] = useState(0)
-  const [distance, setDistance] = useState(0)
+  const [front, setFront] = useState(3)
+  const [back, setBack] = useState(4)
+  const [left, setLeft] = useState(4)
+  const [right, setRight] = useState(4)
+  const [distance, setDistance] = useState(4)
+
+  const setImage = (props, distance) => {
+    return (
+      <img
+        className={props.classes.distanceImg}
+        src={
+          left === 1
+            ? l1
+            : left === 2
+            ? l2
+            : left === 3
+            ? l3
+            : left === 4
+            ? l4
+            : null
+        }
+        alt='left distance'
+      />
+    )
+  }
+
   socket.on('connect', () => {
-    console.warn('COOOOOONNNNEEEECTEEED')
+    console.warn('Socket Connected')
   })
   socket.on('event', data => {
     setDistance(data)
@@ -47,7 +60,7 @@ const App = props => {
   })
   return (
     <div className={classes.App}>
-      <h1>{distance}</h1>
+      <h1>Green Box</h1>
       <div className={classes.infosDiv}>
         <div className={classes.speed}>
           <img className={classes.speedIcon} src={speedIcon} />
