@@ -22,7 +22,8 @@ import issuesIcon from './issueIcon.jpg'
 import {appStyle} from './appStyle'
 import injectSheet from 'react-jss'
 import io from 'socket.io-client'
-const socket = io('http://192.168.0.115:3000')
+const raspberryAdress = 'http://192.168.0.115:3000'
+const socket = io(raspberryAdress)
 
 
 const App = (props)  => {
