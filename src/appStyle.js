@@ -11,7 +11,8 @@ export const appStyle = {
   carDiv: {
     border: '2px solid black',
     width: '90%',
-    marginTop: 30
+    marginTop: 30,
+    borderRadius:9
   },
   distanceImg: {
     height: 170,
@@ -35,6 +36,12 @@ export const appStyle = {
   car: {
     height: 240
   },
+  centerText:{
+    display:'flex',
+    alignItems:'center',
+    justifyContent: 'center',
+    fontWeight:'bold'
+  },
   speedIcon: {
     height: 50,
     marginRight: 7,
@@ -54,7 +61,8 @@ export const appStyle = {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'space-around',
+    width:'100%'
   },
   speed: {
     display: 'flex',

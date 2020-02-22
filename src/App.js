@@ -10,10 +10,16 @@ import issuesIcon from './issueIcon.jpg'
 import { appStyle } from './appStyle'
 import injectSheet from 'react-jss'
 import io from 'socket.io-client'
+import {  MDBRow, MDBCol, MDBIcon } from 'mdbreact'
 const raspberryAdress = 'http://192.168.0.115:3000'
 const socket = io(raspberryAdress)
-
-let a = new AudioContext()
+const a = new AudioContext()
+const SIDES = {
+  F : 'front',
+  R : 'right',
+  L : 'left',
+  B : 'back'
+}
 const beep = (vol, freq, duration) => {
   let v= a.createOscillator()
   let u= a.createGain()
@@ -28,25 +34,25 @@ const beep = (vol, freq, duration) => {
 
 const App = props => {
   let { classes } = props
-  const [front, setFront] = useState(3)
+  const [front, setFront] = useState(1)
   const [back, setBack] = useState(4)
-  const [left, setLeft] = useState(4)
+  const [left, setLeft] = useState(3)
   const [right, setRight] = useState(4)
   const setAndBeep = (side) => {
     switch(side) {
-      case 'back' :
+      case SIDES.B :
           setBack(1);
           beep(30,1000,500);
           break
-      case 'front' :
+      case SIDES.F :
           setFront(1);
           beep(30,1000,500);
           break
-      case 'left' :
+      case SIDES.L:
           setLeft(1);
           beep(30,1000,500);
           break
-      case 'right' :
+      case SIDES.R:
           setRight(1);
           beep(30,1000,500);
           break
@@ -59,7 +65,7 @@ const App = props => {
   })
   socket.on('event', data => {
     data.back > 0 && data.back < 10
-      ? setAndBeep('back') 
+      ? setAndBeep(SIDES.B) 
       : data.back > 10 && data.back < 15
       ? setBack(2)
       : data.back > 15 && data.back < 20
@@ -67,7 +73,7 @@ const App = props => {
       : setBack(0)
 
        data.front > 0 && data.front < 10
-      ? setAndBeep('front') 
+      ? setAndBeep(SIDES.F) 
       : data.front > 10 && data.front < 15
       ? setFront(2)
       : data.front > 15 && data.front < 20
@@ -75,7 +81,7 @@ const App = props => {
       : setFront(0)
 
       data.left > 0 && data.left < 10
-      ? setAndBeep('left') 
+      ? setAndBeep(SIDES.L) 
       : data.left > 10 && data.left < 15
       ? setLeft(2)
       : data.left > 15 && data.left < 20
@@ -83,28 +89,28 @@ const App = props => {
       : setLeft(0)
 
       data.right > 0 && data.right < 10
-      ? setAndBeep('right') 
+      ? setAndBeep(SIDES.R) 
       : data.right > 10 && data.right < 15
       ? setRight(2)
       : data.right > 15 && data.right < 20
       ? setRight(3)
       : setRight(0)
   })
+
   return (
     <div className={classes.App}>
-      <h1>Green Box</h1>
       <div className={classes.infosDiv}>
         <div className={classes.speed}>
-          <img className={classes.speedIcon} src={speedIcon} alt='speed'/>
-          <p>120 km/h</p>
+         <MDBIcon icon='running' size='3x'  className="green-text pr-3 mr-3"/>
+          <span className={classes.centerText}>120 km/h</span>
         </div>
         <div className={classes.position}>
-          <img className={classes.positionIcon} src={localisationIcon} alt='localisation'/>
-          <p>Position label x</p>
+          <MDBIcon icon='map-marked-alt' size='3x' className="green-text pr-3 mr-3"/>
+          <span className={classes.centerText}>41°24'12.2"N 2°10'26.5"E</span>
         </div>
         <div className={classes.issues}>
-          <img className={classes.issuesIcon} src={issuesIcon} alt='issues'/>
-          <p>No Entries</p>
+         <MDBIcon icon='exclamation-circle' size='3x' className="green-text pr-3 mr-3"/>
+          <span className={classes.centerText}>No Entries</span>
         </div>
       </div>
       <div className={classes.carDiv}>
