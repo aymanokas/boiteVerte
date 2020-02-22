@@ -25,38 +25,42 @@ const App = props => {
   const [right, setRight] = useState(4)
   const [distance, setDistance] = useState(4)
 
-  const setImage = (props, distance) => {
-    return (
-      <img
-        className={props.classes.distanceImg}
-        src={
-          left === 1
-            ? l1
-            : left === 2
-            ? l2
-            : left === 3
-            ? l3
-            : left === 4
-            ? l4
-            : null
-        }
-        alt='left distance'
-      />
-    )
-  }
-
   socket.on('connect', () => {
     console.warn('Socket Connected')
   })
   socket.on('event', data => {
     setDistance(data)
-    data > 0 && data < 10
+    data.back > 0 && data.back < 10
       ? setBack(1)
-      : data > 10 && data < 15
+      : data.back > 10 && data.back < 15
       ? setBack(2)
-      : data > 15 && data < 20
+      : data.back > 15 && data.back < 20
       ? setBack(3)
       : setBack(0)
+
+       data.front > 0 && data.front < 10
+      ? setFront(1)
+      : data.front > 10 && data.front < 15
+      ? setFront(2)
+      : data.front > 15 && data.front < 20
+      ? setFront(3)
+      : setFront(0)
+
+      data.left > 0 && data.left < 10
+      ? setLeft(1)
+      : data.left > 10 && data.left < 15
+      ? setLeft(2)
+      : data.left > 15 && data.left < 20
+      ? setLeft(3)
+      : setLeft(0)
+
+      data.right > 0 && data.right < 10
+      ? setRight(1)
+      : data.right > 10 && data.right < 15
+      ? setRight(2)
+      : data.right > 15 && data.right < 20
+      ? setRight(3)
+      : setRight(0)
   })
   return (
     <div className={classes.App}>
