@@ -13,21 +13,53 @@ import io from 'socket.io-client'
 const raspberryAdress = 'http://192.168.0.115:3000'
 const socket = io(raspberryAdress)
 
+let a = new AudioContext()
+const beep = (vol, freq, duration) => {
+  let v= a.createOscillator()
+  let u= a.createGain()
+  v.connect(u)
+  v.frequency.value=freq
+  v.type="square"
+  u.connect(a.destination)
+  u.gain.value=vol*0.01
+  v.start(a.currentTime)
+  v.stop(a.currentTime+duration*0.001)
+}
+
 const App = props => {
   let { classes } = props
   const [front, setFront] = useState(3)
   const [back, setBack] = useState(4)
   const [left, setLeft] = useState(4)
   const [right, setRight] = useState(4)
-  const [distance, setDistance] = useState(4)
+  const setAndBeep = (side) => {
+    switch(side) {
+      case 'back' :
+          setBack(1);
+          beep(30,1000,500);
+          break
+      case 'front' :
+          setFront(1);
+          beep(30,1000,500);
+          break
+      case 'left' :
+          setLeft(1);
+          beep(30,1000,500);
+          break
+      case 'right' :
+          setRight(1);
+          beep(30,1000,500);
+          break
+      default : setRight(0)
+    }
+  }
 
   socket.on('connect', () => {
     console.warn('Socket Connected')
   })
   socket.on('event', data => {
-    setDistance(data)
     data.back > 0 && data.back < 10
-      ? setBack(1)
+      ? setAndBeep('back') 
       : data.back > 10 && data.back < 15
       ? setBack(2)
       : data.back > 15 && data.back < 20
@@ -35,7 +67,7 @@ const App = props => {
       : setBack(0)
 
        data.front > 0 && data.front < 10
-      ? setFront(1)
+      ? setAndBeep('front') 
       : data.front > 10 && data.front < 15
       ? setFront(2)
       : data.front > 15 && data.front < 20
@@ -43,7 +75,7 @@ const App = props => {
       : setFront(0)
 
       data.left > 0 && data.left < 10
-      ? setLeft(1)
+      ? setAndBeep('left') 
       : data.left > 10 && data.left < 15
       ? setLeft(2)
       : data.left > 15 && data.left < 20
@@ -51,7 +83,7 @@ const App = props => {
       : setLeft(0)
 
       data.right > 0 && data.right < 10
-      ? setRight(1)
+      ? setAndBeep('right') 
       : data.right > 10 && data.right < 15
       ? setRight(2)
       : data.right > 15 && data.right < 20
@@ -63,15 +95,15 @@ const App = props => {
       <h1>Green Box</h1>
       <div className={classes.infosDiv}>
         <div className={classes.speed}>
-          <img className={classes.speedIcon} src={speedIcon} />
+          <img className={classes.speedIcon} src={speedIcon} alt='speed'/>
           <p>120 km/h</p>
         </div>
         <div className={classes.position}>
-          <img className={classes.positionIcon} src={localisationIcon} />
+          <img className={classes.positionIcon} src={localisationIcon} alt='localisation'/>
           <p>Position label x</p>
         </div>
         <div className={classes.issues}>
-          <img className={classes.issuesIcon} src={issuesIcon} />
+          <img className={classes.issuesIcon} src={issuesIcon} alt='issues'/>
           <p>No Entries</p>
         </div>
       </div>
@@ -111,7 +143,7 @@ const App = props => {
               alt='front distance'
             />
           </div>
-          <img className={classes.car} src={car} />
+          <img className={classes.car} src={car} alt='car'/>
           <div className={classes.backDistance}>
             <img
               className={classes.distanceImg}
