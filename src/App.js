@@ -2,13 +2,9 @@ import React, { useState } from 'react'
 import car from './car.png'
 import localisationIcon from './localisation.png'
 import { l1, l2, l3, l4 } from './distancePics/left'
-
 import { f1, f2, f3, f4 } from './distancePics/front'
-
 import { b1, b2, b3, b4 } from './distancePics/back'
-
 import { r1, r2, r3, r4 } from './distancePics/right'
-
 import speedIcon from './speedIcon.png'
 import issuesIcon from './issueIcon.jpg'
 import { appStyle } from './appStyle'
