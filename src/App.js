@@ -35,7 +35,7 @@ const beep = (vol, freq, duration) => {
 const App = props => {
   let { classes } = props
   const [front, setFront] = useState(1)
-  const [back, setBack] = useState(4)
+  const [back, setBack] = useState(2)
   const [left, setLeft] = useState(3)
   const [right, setRight] = useState(4)
   const setAndBeep = (side) => {
@@ -56,7 +56,7 @@ const App = props => {
           setRight(1);
           beep(30,1000,500);
           break
-      default : setRight(0)
+      default : setRight(1)
     }
   }
 
